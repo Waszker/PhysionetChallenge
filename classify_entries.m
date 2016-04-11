@@ -9,11 +9,34 @@ function classify_entries(folder, input, classifier_path, output)
 % be loaded
 % output: file to write answers to
 %
+model_struct = load(classifier_path);
+
+if exist(strcat(folder, 'saved_features.mat'), 'file') == 0
+    data = get_entries_features(folder, input);
+else
+    features = load(strcat(folder, 'saved_features.mat'));
+    data = features.data;
+end
+
+% Now classify
+[results, ~] = predict(model_struct.model, data);
+if isa(model_struct.model, 'TreeBagger')
+    % RF returns results in a cell array instead of numeric vector
+    % Conversion needed
+    results = cellfun(@(x)str2double(x), results);
+end
+
+% Save the results
+save(strcat(folder, output), 'results', '-ascii');
+
+end
+
+function data = get_entries_features(folder, input)
+
 path = strcat(folder, input);
 file_content = textread(path, '%s', 'whitespace', ',');
 filenames = file_content(1:2:end);
 filenames = filenames';
-model_struct = load(classifier_path);
 data = zeros(length(filenames), 20);
 
 % Parallel computations
@@ -25,12 +48,5 @@ parfor i=1:length(filenames)
     disp(strcat('Finished reading ', filename));
 end
 delete(gcp);
-
-% Now classify
-[results, ~] = predict(model_struct.model, data);
-%% TODO: RF method returns strings in cell array instead of numeric vector...
-
-% Save the results
-save(strcat(folder, output), 'results', '-ascii');
 
 end
