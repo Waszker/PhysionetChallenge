@@ -2,6 +2,19 @@
 from itertools import izip
 import sys, getopt
 
+def _count_lines_and_errors(answers, predictions):
+    lines = errors = 0
+    for a, p in izip(answers, predictions):
+        a = float(a.split(',')[1])
+        p = float(p)
+        lines += 1
+        if a != p:
+            # print 'Got mismatch on line ' + str(lines) + ' with a=' + str(a) + ' and p=' + str(p)
+            errors += 1
+
+    return lines, errors
+
+
 if __name__ == '__main__':
     try:
         if len(sys.argv) != 5:
@@ -22,15 +35,7 @@ if __name__ == '__main__':
         print 'Must specify exactly 2 arguments -a "answers_file.csv" and -p "preditions_file"'
         sys.exit(1)
 
-    lines = errors = 0
     with open(answers, 'r') as A, open(predictions, 'r') as P:
-        for a, p in izip(A, P):
-            a = float(a.split(',')[1])
-            p = float(p)
-            lines += 1
-            if a != p:
-                # print 'Got mismatch on line ' + str(lines) + ' with a=' + str(a) + ' and p=' + str(p)
-                errors += 1
-
-    print 'Results are ' + str(lines) + ' and ' + str(errors) + ' errors'
-    print 'Error ratio: ' + str(float(errors)/lines)
+        lines, errors = _count_lines_and_errors(A, P)
+        print 'Results are ' + str(lines) + ' and ' + str(errors) + ' errors'
+        print 'Error ratio: ' + str(float(errors)/lines)
