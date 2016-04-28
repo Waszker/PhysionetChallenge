@@ -25,14 +25,19 @@ data = zeros(length(filenames), 20);
 filenames = filenames';
 
 % Parallel computations
-parpool();
-parfor i=1:length(filenames)
-    filename = filenames(i);
-    features = get_features(strcat(folder, filename));
-    data(i,:) = features;
-    disp(strcat('Finished reading ', filename));
+if exist(strcat(folder, 'saved_features_normalized.mat'), 'file') ~= 2
+    parpool();
+    parfor i=1:length(filenames)
+        filename = filenames(i);
+        features = get_features(strcat(folder, filename));
+        data(i,:) = features;
+        disp(strcat('Finished reading ', filename));
+    end
+    delete(gcp);
+else
+    features = load(strcat(folder, 'saved_features.mat'));
+    data = features.data;    
 end
-delete(gcp);
 
 % Create classifiers
 if strcmp(classifier, valid_classifiers(1))

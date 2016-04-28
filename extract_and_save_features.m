@@ -1,4 +1,4 @@
-function extract_and_save_features(folder, input, output)
+function extract_and_save_features(folder, input, output, norm_vector)
 %
 %% TODO: Add description.
 %
@@ -9,14 +9,30 @@ filenames = filenames';
 data = zeros(length(filenames), 20);
 
 % Parallel computations
-parpool();
-parfor i=1:length(filenames)
-    filename = filenames(i);
-    features = get_features(strcat(folder, filename));
-    data(i,:) = features;
-    disp(strcat('Finished reading ', filename));
+if exist(strcat(folder, 'saved_features.mat'), 'file') ~= 2
+    parpool();
+    parfor i=1:length(filenames)
+        filename = filenames(i);
+        features = get_features(strcat(folder, filename));
+        data(i,:) = features;
+        disp(strcat('Finished reading ', filename));
+    end
+    delete(gcp);
+else
+    features = load(strcat(folder, 'saved_features.mat'));
+    data = features.data;    
 end
-delete(gcp);
+
+% Normalize features (if requested)
+if exist(strcat(folder, norm_vector), 'file') == 2
+    norm = load(strcat(folder, norm_vector));
+    norm = norm.norm_vector;
+    max_vector = norm.max_vector;
+    min_vector = norm.min_vector;
+    for i = 1 : length(data(:,1))
+        data(i, :) = (data(i, :) - min_vector) ./ (max_vector - min_vector);
+    end
+end
 
 % Save the results
 save(strcat(folder, output), 'data');
