@@ -1,6 +1,11 @@
 function extract_and_save_features(folder, input, output, norm_vector)
 %
-%% TODO: Add description.
+%% Extracts features from files in specified path
+%%
+%% folder - folder in which files are stored (ending with '/'
+%% input - .csv file with all audio filenames listed
+%% output - filename in folder to which save extracted features
+%% norm_vector - name of the file containg normalization vector
 %
 path = strcat(folder, input);
 file_content = textread(path, '%s', 'whitespace', ',');
