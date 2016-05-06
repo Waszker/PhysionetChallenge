@@ -11,10 +11,10 @@ function classify_entries(folder, input, classifier_path, output)
 %
 model_struct = load(classifier_path);
 
-if exist(strcat(folder, 'saved_features.mat'), 'file') == 0
+if exist(strcat(folder, 'saved_features_normalized.mat'), 'file') == 0
     data = get_entries_features(folder, input);
 else
-    features = load(strcat(folder, 'saved_features.mat'));
+    features = load(strcat(folder, 'saved_features_normalized.mat'));
     data = features.data;
 end
 

@@ -35,7 +35,7 @@ if exist(strcat(folder, 'saved_features_normalized.mat'), 'file') ~= 2
     end
     delete(gcp);
 else
-    features = load(strcat(folder, 'saved_features.mat'));
+    features = load(strcat(folder, 'saved_features_normalized.mat'));
     data = features.data;    
 end
 
