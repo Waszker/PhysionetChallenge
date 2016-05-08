@@ -112,7 +112,29 @@ else
     sd_Amp_DiaS2 = 0;
 end
 
-features = [m_RR sd_RR  mean_IntS1 sd_IntS1  mean_IntS2 sd_IntS2  mean_IntSys sd_IntSys  mean_IntDia sd_IntDia m_Ratio_SysRR sd_Ratio_SysRR m_Ratio_DiaRR sd_Ratio_DiaRR m_Ratio_SysDia sd_Ratio_SysDia m_Amp_SysS1 sd_Amp_SysS1 m_Amp_DiaS2 sd_Amp_DiaS2];
+%new features
+mm_RR        = round(max(diff(A(:,1)))-min(diff(A(:,1))));             % max-min value of RR intervals
+mm_IntS1  = round(max(A(:,2)-A(:,1))-min(A(:,2)-A(:,1)));            % max-min value of S1 intervals
+mm_IntS2  = round(max(A(:,4)-A(:,3))-min(A(:,4)-A(:,3)));            % max-min value of S2 intervals
+mm_IntSys = round(max(A(:,3)-A(:,2))-min(A(:,3)-A(:,2)));            % max-min value of systole intervals
+mm_IntDia = round(max(A(2:end,1)-A(1:end-1,4))-min(A(2:end,1)-A(1:end-1,4)));  % max-min value of diastole intervals
+
+
+cv_RR       = round(sd_RR/m_RR);                      %Coefficient of variation (SD) value of RR intervals
+cv_IntS1    = round(sd_IntS1/mean_IntS1);                    %Coefficient of variation value of S1 intervals
+cv_IntS2    = round(sd_IntS2/mean_IntS2);                    %Coefficient of variation value of S2 intervals
+cv_IntSys   = round(sd_IntSys/mean_IntSys);                    %Coefficient of variation value of systole intervals
+cv_IntDia   = round(sd_IntDia/mean_IntDia);                    %Coefficient of variation value of diastole intervals
+
+
+k_RR       = round(kurtosis(diff(A(:,1))));              % kurtosis value of RR intervals
+k_IntS1    = round(kurtosis(A(:,2)-A(:,1)));             % kurtosis value of S1 intervals
+k_IntS2    = round(kurtosis(A(:,4)-A(:,3)));             % kurtosis value of S2 intervals
+k_IntSys   = round(kurtosis(A(:,3)-A(:,2)));             % kurtosis value of systole intervals
+k_IntDia   = round(kurtosis(A(2:end,1)-A(1:end-1,4)));   % kurtosis value of diastole intervals
+
+
+features = [m_RR sd_RR  mean_IntS1 sd_IntS1  mean_IntS2 sd_IntS2  mean_IntSys sd_IntSys  mean_IntDia sd_IntDia m_Ratio_SysRR sd_Ratio_SysRR m_Ratio_DiaRR sd_Ratio_DiaRR m_Ratio_SysDia sd_Ratio_SysDia m_Amp_SysS1 sd_Amp_SysS1 m_Amp_DiaS2 sd_Amp_DiaS2 mm_RR mm_IntS1 mm_IntS2 mm_IntSys mm_IntDia cv_RR cv_IntS1 cv_IntS2 cv_IntSys cv_IntDia k_RR k_IntS1 k_IntS2 k_IntSys k_IntDia];
 
 
 
