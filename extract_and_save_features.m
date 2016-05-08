@@ -1,11 +1,12 @@
-function extract_and_save_features(folder, input, output, norm_vector)
+function extract_and_save_features(folder, input, saved_features, output, norm_vector)
 %
 %% Extracts features from files in specified path
 %%
 %% folder - folder in which files are stored (ending with '/'
 %% input - .csv file with all audio filenames listed
+%% saved_features - file in which features are stored (use '' if none)
 %% output - filename in folder to which save extracted features
-%% norm_vector - name of the file containg normalization vector
+%% norm_vector - full path to the file containg normalization vector
 %
 path = strcat(folder, input);
 file_content = textread(path, '%s', 'whitespace', ',');
@@ -14,7 +15,7 @@ filenames = filenames';
 data = zeros(length(filenames), 20);
 
 % Parallel computations
-if exist(strcat(folder, 'saved_features.mat'), 'file') ~= 2
+if exist(strcat(folder, saved_features), 'file') ~= 2
     parpool();
     parfor i=1:length(filenames)
         filename = filenames(i);
@@ -24,13 +25,13 @@ if exist(strcat(folder, 'saved_features.mat'), 'file') ~= 2
     end
     delete(gcp);
 else
-    features = load(strcat(folder, 'saved_features.mat'));
+    features = load(strcat(folder, saved_features));
     data = features.data;    
 end
 
 % Normalize features (if requested)
-if exist(strcat(folder, norm_vector), 'file') == 2
-    norm = load(strcat(folder, norm_vector));
+if exist(norm_vector, 'file') == 2
+    norm = load(norm_vector);
     norm = norm.norm_vector;
     max_vector = norm.max_vector;
     min_vector = norm.min_vector;

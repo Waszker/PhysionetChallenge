@@ -1,4 +1,4 @@
-function classify_entries(folder, input, classifier_path, output)
+function classify_entries(folder, input, classifier_path, saved_features, output)
 %
 % Function that runs classification on provided set of data.
 %
@@ -7,14 +7,15 @@ function classify_entries(folder, input, classifier_path, output)
 % input: filename of .csv file containing data about files to classify
 % classifier_path: path to file containing saved classifier, that needs to
 % be loaded
+% saved_features : file in which features are stored (use '' if none)
 % output: file to write answers to
 %
 model_struct = load(classifier_path);
 
-if exist(strcat(folder, 'saved_features_normalized.mat'), 'file') == 0
+if exist(strcat(folder, saved_features), 'file') == 0
     data = get_entries_features(folder, input);
 else
-    features = load(strcat(folder, 'saved_features_normalized.mat'));
+    features = load(strcat(folder, saved_features));
     data = features.data;
 end
 

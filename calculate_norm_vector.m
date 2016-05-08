@@ -1,6 +1,10 @@
-function calculate_norm_vector(folder, input, output)
+function calculate_norm_vector(folder, input, saved_features, output)
 %
-%% TODO: Add description
+%% Calculates normalization vector for read data.
+%% folder - folder in which audio samples are kept
+%% input - .csv file with audio samples filenames, located in folder
+%% saved_features - name of file containing saved features (use '' if none)
+%% output - name of the file to which save the calculated vector
 %
 path = strcat(folder, input);
 file_content = textread(path, '%s', 'whitespace', ',');
@@ -8,8 +12,8 @@ filenames = file_content(1:2:end);
 filenames = filenames';
 data = zeros(length(filenames), 20);
 
-% Parallel computations
-if exist(strcat(folder, 'saved_features.mat'), 'file') ~= 2
+% Parallel computations - calculate features or...
+if exist(strcat(folder, saved_features), 'file') ~= 2
     parpool();
     parfor i=1:length(filenames)
         filename = filenames(i);
@@ -18,7 +22,8 @@ if exist(strcat(folder, 'saved_features.mat'), 'file') ~= 2
     end
     delete(gcp);
 else
-    features = load(strcat(folder, 'saved_features.mat'));
+    % ... load them if already saved
+    features = load(strcat(folder, saved_features));
     data = features.data;
 end
 

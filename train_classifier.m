@@ -1,4 +1,4 @@
-function train_classifier(folder, input, output, classifier)
+function train_classifier(folder, input, saved_features, output, classifier)
 %
 % Function that trains certain classifier on given data set.
 %
@@ -7,6 +7,7 @@ function train_classifier(folder, input, output, classifier)
 % input: filename of .csv file containing data in two rows. First row
 % contains names of .wav files, the second one -1 or 1 value depending on the
 % PCG status
+% saved_features : file in which features are stored (use '' if none)
 % output: file to write svm trained model to. The path for this model will
 % be the same as input one
 % classifier: one of available classifiers to train (accepted keywords are
@@ -25,7 +26,7 @@ data = zeros(length(filenames), 20);
 filenames = filenames';
 
 % Parallel computations
-if exist(strcat(folder, 'saved_features_normalized.mat'), 'file') ~= 2
+if exist(strcat(folder, saved_features), 'file') ~= 2
     parpool();
     parfor i=1:length(filenames)
         filename = filenames(i);
@@ -35,7 +36,7 @@ if exist(strcat(folder, 'saved_features_normalized.mat'), 'file') ~= 2
     end
     delete(gcp);
 else
-    features = load(strcat(folder, 'saved_features_normalized.mat'));
+    features = load(strcat(folder, saved_features));
     data = features.data;    
 end
 
