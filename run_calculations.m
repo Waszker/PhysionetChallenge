@@ -16,7 +16,7 @@ if should_extract_features == 1
     disp('Beginning features normalization');
     new_features_filename = strcat(filename_base, '_normalized.mat');
     calculate_norm_vector(folder, input, features_filename, strcat('norm_vector_', filename_base));
-    extract_and_save_features(folder, input, features_filename, new_features_filename, strcat('validation/norm_vector_', filename_base));
+    extract_and_save_features(folder, input, features_filename, new_features_filename, strcat('validation/norm_vector_', filename_base, '.mat'));
     features_filename = new_features_filename;
     disp('Ended normalization');
 end
@@ -45,8 +45,7 @@ if should_extract_features == 1
     for i = 1:5
         path = strcat(folder, letters(i), '/');
         disp('Extracting features (without normalization) from test sets');
-        extract_and_save_features(path, input, '', features_filename, '');
-        extract_and_save_features(path, input, '', features_filename, strcat('validation/norm_vector_', filename_base));
+        extract_and_save_features(path, input, '', features_filename, strcat('validation/norm_vector_', filename_base, '.mat'));
         disp('Finished extracting features');
     end
 end
