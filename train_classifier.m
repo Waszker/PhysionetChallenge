@@ -22,7 +22,7 @@ file_content = textread(path, '%s', 'whitespace', ',');
 filenames = file_content(1:2:end); % read filenames
 results = csvread(path, 0, 1); % read correct answers for data
 
-data = zeros(length(filenames), 20);
+data = zeros(length(filenames), get_features_number());
 filenames = filenames';
 
 % Parallel computations

@@ -12,7 +12,7 @@ path = strcat(folder, input);
 file_content = textread(path, '%s', 'whitespace', ',');
 filenames = file_content(1:2:end);
 filenames = filenames';
-data = zeros(length(filenames), 20);
+data = zeros(length(filenames), get_features_number());
 
 % Parallel computations
 if exist(strcat(folder, saved_features), 'file') ~= 2
