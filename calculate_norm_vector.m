@@ -30,8 +30,9 @@ end
 % Calulate norm vector and save it
 max_vector = max(data);
 min_vector = min(data);
+max_vector(max_vector == 0) = 1e-10;
+min_vector(min_vector == 0) = 1e-10;
 norm_vector = struct('max_vector', max_vector, 'min_vector', min_vector);
 save(strcat(folder, output), 'norm_vector');
-
 
 end

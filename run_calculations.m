@@ -5,12 +5,12 @@ function run_calculations(should_extract_features, features_filename, output)
 folder = 'validation/';
 input = 'REFERENCE.csv';
 filename_base = strsplit(features_filename, '.');
-filename_base = filename_base(1);
+filename_base = filename_base{1};
 
 % Extract and normalize data if needed
 if should_extract_features == 1
     disp('Extracting features (without normalization)');
-    extract_and_save_features(folder, input, '', features_filename, '');
+    extract_and_save_features(folder, input, features_filename, features_filename, '');
     disp('Finished extracting features');
     
     disp('Beginning features normalization');
@@ -22,18 +22,18 @@ if should_extract_features == 1
 end
 
 % Now train classifier
-classifiers = ['svm', 'rf', 'knn'];
+classifiers = {'svm', 'rf', 'knn'};
 disp('Beginning training classifiers');
-for i = 1 : 3
-    train_classifier(folder, input, features_filename, strcat(filename_base, classifiers(i), '.mat'), classifiers(i));
+for i = 1:3
+    train_classifier(folder, input, features_filename, strcat(filename_base, classifiers{i}, '.mat'), classifiers{i});
 end
 disp('Ended training classifiers');
 
 % Now classify
 disp('Running classification');
-for i = 1 : 3
-    result_file = strcat(classifiers(i), '_', output);
-    classifier_path = strcat(folder, strcat(filename_base, classifiers(i), '.mat'));
+for i = 1:3
+    result_file = strcat(classifiers{i}, '_', output);
+    classifier_path = strcat(folder, strcat(filename_base, classifiers{i}, '.mat'));
     classify_entries(folder, input, classifier_path, features_filename, result_file);
 end
 
@@ -56,8 +56,8 @@ for i = 1:5
     disp('Descending into folder');
     disp(path);
     for j = 1 : 3
-        result_file = strcat(classifiers(j), '_', output);
-        classifier_path = strcat(path, strcat(filename_base, classifiers(j), '.mat'));
+        result_file = strcat(classifiers{j}, '_', output);
+        classifier_path = strcat(path, strcat(filename_base, classifiers{j}, '.mat'));
         classify_entries(path, input, classifier_path, features_filename, result_file);
     end
 end
