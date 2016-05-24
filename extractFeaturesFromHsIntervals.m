@@ -120,11 +120,11 @@ mm_IntSys = round(max(A(:,3)-A(:,2))-min(A(:,3)-A(:,2)));            % max-min v
 mm_IntDia = round(max(A(2:end,1)-A(1:end-1,4))-min(A(2:end,1)-A(1:end-1,4)));  % max-min value of diastole intervals
 
 
-cv_RR       = round(sd_RR/m_RR);                      %Coefficient of variation (SD) value of RR intervals
-cv_IntS1    = round(sd_IntS1/mean_IntS1);                    %Coefficient of variation value of S1 intervals
-cv_IntS2    = round(sd_IntS2/mean_IntS2);                    %Coefficient of variation value of S2 intervals
-cv_IntSys   = round(sd_IntSys/mean_IntSys);                    %Coefficient of variation value of systole intervals
-cv_IntDia   = round(sd_IntDia/mean_IntDia);                    %Coefficient of variation value of diastole intervals
+% cv_RR       = round(sd_RR/m_RR);                      %Coefficient of variation (SD) value of RR intervals
+% cv_IntS1    = round(sd_IntS1/mean_IntS1);                    %Coefficient of variation value of S1 intervals
+% cv_IntS2    = round(sd_IntS2/mean_IntS2);                    %Coefficient of variation value of S2 intervals
+% cv_IntSys   = round(sd_IntSys/mean_IntSys);                    %Coefficient of variation value of systole intervals
+% cv_IntDia   = round(sd_IntDia/mean_IntDia);                    %Coefficient of variation value of diastole intervals
 
 
 k_RR       = round(kurtosis(diff(A(:,1))));              % kurtosis value of RR intervals

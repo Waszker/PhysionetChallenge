@@ -17,9 +17,9 @@ if should_extract_features == 1
     new_features_filename = strcat(filename_base, '_normalized.mat');
     calculate_norm_vector(folder, input, features_filename, strcat('norm_vector_', filename_base));
     extract_and_save_features(folder, input, features_filename, new_features_filename, strcat('validation/norm_vector_', filename_base, '.mat'));
-    features_filename = new_features_filename;
     disp('Ended normalization');
 end
+features_filename = strcat(filename_base, '_normalized.mat');
 
 % Now train classifier
 classifiers = {'svm', 'rf', 'knn'};
@@ -57,7 +57,7 @@ for i = 1:5
     disp(path);
     for j = 1 : 3
         result_file = strcat(classifiers{j}, '_', output);
-        classifier_path = strcat(path, strcat(filename_base, classifiers{j}, '.mat'));
+        classifier_path = strcat('validation/', strcat(filename_base, classifiers{j}, '.mat'));
         classify_entries(path, input, classifier_path, features_filename, result_file);
     end
 end
