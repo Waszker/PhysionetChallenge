@@ -134,7 +134,7 @@ k_IntSys   = round(kurtosis(A(:,3)-A(:,2)));             % kurtosis value of sys
 k_IntDia   = round(kurtosis(A(2:end,1)-A(1:end-1,4)));   % kurtosis value of diastole intervals
 
 
-features = [m_RR sd_RR  mean_IntS1 sd_IntS1  mean_IntS2 sd_IntS2  mean_IntSys sd_IntSys  mean_IntDia sd_IntDia m_Ratio_SysRR sd_Ratio_SysRR m_Ratio_DiaRR sd_Ratio_DiaRR m_Ratio_SysDia sd_Ratio_SysDia m_Amp_SysS1 sd_Amp_SysS1 m_Amp_DiaS2 sd_Amp_DiaS2 mm_RR mm_IntS1 mm_IntS2 mm_IntSys mm_IntDia cv_RR cv_IntS1 cv_IntS2 cv_IntSys cv_IntDia k_RR k_IntS1 k_IntS2 k_IntSys k_IntDia];
+features = [m_RR sd_RR  mean_IntS1 sd_IntS1  mean_IntS2 sd_IntS2  mean_IntSys sd_IntSys  mean_IntDia sd_IntDia m_Ratio_SysRR sd_Ratio_SysRR m_Ratio_DiaRR sd_Ratio_DiaRR m_Ratio_SysDia sd_Ratio_SysDia m_Amp_SysS1 sd_Amp_SysS1 m_Amp_DiaS2 sd_Amp_DiaS2 mm_RR mm_IntS1 mm_IntS2 mm_IntSys mm_IntDia k_RR k_IntS1 k_IntS2 k_IntSys k_IntDia];
 
 
 
