@@ -1,3 +1,3 @@
 function number = get_features_number()
-number = 35;
+number = 30;
 end

@@ -41,6 +41,7 @@ if exist(norm_vector, 'file') == 2
 end
 
 % Save the results
+data(isnan(data)) = 0;
 save(strcat(folder, output), 'data');
 
 end

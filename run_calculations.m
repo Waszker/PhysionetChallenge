@@ -1,6 +1,11 @@
 function run_calculations(should_extract_features, features_filename, output)
 %
-%% TODO: Add description
+%% Runs all required calculations: features extraction, normalization, training classifiers
+%% and classifying data.
+%%
+%% should_extract_features - 0 if previously saved features should be used, 1 otherwise
+%% features_filename - name of the file where extracted features are stored
+%% output - filename for the file containing results
 %
 folder = 'validation/';
 input = 'REFERENCE.csv';
@@ -44,7 +49,7 @@ letters = ['a', 'b', 'c', 'd', 'e'];
 if should_extract_features == 1 
     for i = 1:5
         path = strcat(folder, letters(i), '/');
-        disp('Extracting features (without normalization) from test sets');
+        disp('Extracting features (with normalization) from test sets');
         extract_and_save_features(path, input, '', features_filename, strcat('validation/norm_vector_', filename_base, '.mat'));
         disp('Finished extracting features');
     end
