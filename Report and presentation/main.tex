@@ -45,10 +45,14 @@ Głównymi etapami zadania są:
 Wraz z informacjami zamieszczonymi na stronie, dotyczącymi tematyki projektu, dołączone zostały zbiory nagrań audio pracy serca, oraz wstępny program realizujący cel zadania. Program ten zawiera wszystkie z wymienionych wcześniej etapów, jednak wymaga modyfikacji. \\
 Użyta w implementacji segmentacja opisana jest przez autorów konkursu jako \textit{state of the art} i nie została przez nas zmieniona. Wyodrębniane cechy nie wyczerpują zakresu możliwych do wyekstrahowania informacji, dlatego też uzupełniliśmy istniejący zestaw o kilka nowych cech. W dostarczonym rozwiązaniu najgorzej jednak prezentuje się klasyfikacja, która wykorzystuje naiwne techniki statystyczne. To właśnie ona w pierwszym kroku została poddana usprawnieniom i poprawkom.\\
 
+
+\section{Ekstrahowane cechy}
+W ramach konkursu Physionet przygotowane zostały pliki przeprowadzające wstępną segmentację, ekstrakcję cech i prostą klasyfikację. Ponieważ segmentacja korzysta z najnowszych algorytmów i podejść, została ona pozostawiona i wykorzystana w ramach projektu. Do zestawu wyciąganych cech, na które składały się takie wartości jak odchylenia standardowe, wartości średnie oraz wariancje długości trwania poszczególnych wyróżnionych części cyklu PCG, dodane zostały trzy nowe. Były nimi wartości minimalne, maksymalne oraz kurtoza dla interwałów pomiędzy poszczególnymi elementami cyklu bicia serca. Ostatecznie ekstrahowany wektor cech miał długość 30 elementów.
+
 \section{Klasyfikatory}
 
 \subsection{Opis}
-Przy konstruowaniu lepszych klasyfikatorów rozważyliśmy kilka znanych i sprawdzonych metod: SVM, KNN i Lasy losowe. Wszystkie z wymienionych podejść charakteryzują się bardzo dobrymi wynikami w dziedzinie klasyfikacji, jednak niekoniecznie sprawdzają się równie dobrze w tych samych warunkach. W naszej pracy chcieliśmy zbadać wpływ wyboru klasyfikatora na skuteczność rozpoznawania zaburzeń rytmu serca w nagraniach. Testy zostały przeprowadzone z użyciem gotowej implementacji dostępnej na stronie konkursu.\\
+Przy konstruowaniu lepszych klasyfikatorów rozważyliśmy kilka znanych i sprawdzonych metod: SVM, KNN i Lasy losowe. Wszystkie z wymienionych podejść charakteryzują się bardzo dobrymi wynikami w dziedzinie klasyfikacji, jednak niekoniecznie sprawdzają się równie dobrze w tych samych warunkach. W naszej pracy chcieliśmy zbadać wpływ wyboru klasyfikatora na skuteczność rozpoznawania zaburzeń rytmu serca w nagraniach. Testy zostały przeprowadzone z użyciem gotowej implementacji dostępnej na stronie konkursu. Wszystkie implementacje wykorzystywanych klasyfikatorów zostały użyte w ramach pakietu MATLAB. \\
 
 \subsubsection{SVM}
 
@@ -63,6 +67,7 @@ Maszyna wektorów nośnych (SVM) jest klasyfikatorem którego nauka ma na celu w
 
 
 \subsubsection{RF}
+Klasyfikator korzystający z drzew decyzyjnych które dla każdego elementu głosują nad jego przynależnością do określonej klasy. Liczba drzew decyzyjnych wykorzystywanych w procesie uczenia i klasyfikacji jest parametrem którego wartość należy samemu określić.
 
 \begin{figure}[!htp]
 	\centering
@@ -89,7 +94,12 @@ Każdy z wybranych przez nas klasyfikatorów ma pewne charakterystyczne parametr
 	\item KNN: liczba sąsiadów branych pod uwagę: 5
 \end{itemize}
 
-\section{Wyniki}
+\section{Wykrywanie anomalii}
+Podczas obliczeń okazało się, że jednym z problemów z jakim zmierzyć się musiały klasyfikatory była pewna liczba zaszumionych nagrań, których wektor cech nie chciał łatwo poddawać się klasyfikacji. Nagrania te mogą doprowadzić do sytuacji w której klasyfikator udzieli błędnej odpowiedzi, co może mieć fatalne skutki w momencie gdy nagranie zawierało błędną pracę serca a uznane było za w pełni poprawne. Aby uniknąć takich problemów, organizatorzy konkursu zdecydowali się wprowadzić możliwość uznania nagrania za niemożliwe lub zbyt ryzykowne do klasyfikacji. Ponieważ jednak użyte w projekcie klasyfikatory charakteryzują się udzielaniem odpowiedzi w postaci binarnej (nagranie poprawne/niepoprawne) należało użyć nowego mechanizmu wzbogacającego istniejący już proces. \\
+
+Wykorzystany w tym celu detektor anomalii w serii nagrań korzysta z testu Kołmogorowa-Smirnowa. Jest to test statystyczny zwracający dla każdego elementu wartość rzeczywistą z przedziału [0-1] oznaczającą prawdopodobieństwo, że wybrany punkt jest anomalią w serii. \\
+
+\section{Podsumowanie i wyniki}
 Wstępne testy przeprowadzone zostały na znormalizowanych cechach dostepnych w ramach dostarczonego przez konkurs oprogramowania. Zawierały one takie wartości jak odchylenia standardowe interwałów dla poszczególnych segmentów sygnału PCG, standardowe odchylenia oraz wartości średnie. Wyniki klasyfikacji zostały przedstawione w tabelce \ref{results1}. \\
 
 \begin{table}[!htp]
