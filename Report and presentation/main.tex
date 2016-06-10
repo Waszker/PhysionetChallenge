@@ -22,7 +22,9 @@
 {\large \today}\\[1cm]
 \end{center}
 
-Nasz projekt polega na realizacji zadania przedstawionego na stronie\\
+\section{Opis projektu}
+
+Projekt polega na realizacji zadania przedstawionego na stronie\\
 \textit{https://www.physionet.org/challenge/2016}. Jego celem jest przetworzenie nagrań dźwięków serca i zidentyfikowanie, które z nich reprezentują zaburzoną pracę serca i wymagają diagnozy eksperta.\\
 Fonokardiogram (\textit{Phonocardiogram},PCG) jest graficznym zapisem pracy serca. Poniższy rysunek przedstawia fragment zapisu PCG.\\\\
 
@@ -43,8 +45,51 @@ Głównymi etapami zadania są:
 Wraz z informacjami zamieszczonymi na stronie, dotyczącymi tematyki projektu, dołączone zostały zbiory nagrań audio pracy serca, oraz wstępny program realizujący cel zadania. Program ten zawiera wszystkie z wymienionych wcześniej etapów, jednak wymaga modyfikacji. \\
 Użyta w implementacji segmentacja opisana jest przez autorów konkursu jako \textit{state of the art} i nie została przez nas zmieniona. Wyodrębniane cechy nie wyczerpują zakresu możliwych do wyekstrahowania informacji, dlatego też uzupełniliśmy istniejący zestaw o kilka nowych cech. W dostarczonym rozwiązaniu najgorzej jednak prezentuje się klasyfikacja, która wykorzystuje naiwne techniki statystyczne. To właśnie ona w pierwszym kroku została poddana usprawnieniom i poprawkom.\\
 
+\section{Klasyfikatory}
+
+\subsection{Opis}
 Przy konstruowaniu lepszych klasyfikatorów rozważyliśmy kilka znanych i sprawdzonych metod: SVM, KNN i Lasy losowe. Wszystkie z wymienionych podejść charakteryzują się bardzo dobrymi wynikami w dziedzinie klasyfikacji, jednak niekoniecznie sprawdzają się równie dobrze w tych samych warunkach. W naszej pracy chcieliśmy zbadać wpływ wyboru klasyfikatora na skuteczność rozpoznawania zaburzeń rytmu serca w nagraniach. Testy zostały przeprowadzone z użyciem gotowej implementacji dostępnej na stronie konkursu.\\
 
+\subsubsection{SVM}
+
+Maszyna wektorów nośnych (SVM) jest klasyfikatorem którego nauka ma na celu wyznaczenie hiperpłaszczyzny rozdzielającej z maksymalnym marginesem przykłady należące do klas. Najprostszym sposobem jest próba liniowego odseparowania punktów. Niestety, często okazuje się, że jest ona niewystarczająca lub wręcz niemożliwa. W tym celu stworzone zostały funkcje jądrowe które mapują dostarczone punkty na odpowiadające im elementy z wyższych wymiarów celem umożliwienia ich późniejszej separacji. 
+
+\begin{figure}[!htp]
+	\centering
+	\includegraphics[scale=0.6]{svm.png}
+	\caption{Przykład zachowania klasyfikatora SVM dla różnych funkcji jądrowych}
+	\label{svmfigure}
+\end{figure}
+
+
+\subsubsection{RF}
+
+\begin{figure}[!htp]
+	\centering
+	\includegraphics[scale=2.0]{rf.jpg}
+	\caption{Klasyfikator korzystający z lasów losowych buduje odpowiednią liczbę drzew które następnie głosują nad zaklasyfikowaniem podanego elementu}
+	\label{rffigure}
+\end{figure}
+
+\subsubsection{KNN}
+Klasyfikacja metodą k-najbliższych sąsiadów polega na sprawdzeniu otoczenia wybranego punktu i nadanie mu przynależności do tej klasy do której należy większość sąsiadów. Liczba rozpatrywanych sąsiadów jest wartością arbitralną i jej zmiany mogą znacząco wpływać na jakość wyników.
+
+\begin{figure}[!htp]
+	\centering
+	\includegraphics[scale=0.5]{knn.png}
+	\caption{Klasyfikator KNN przydziela punktów do klas na podstawie ich odległości}
+	\label{knnfigure}
+\end{figure}
+
+\subsection{Dobór parametrów}
+Każdy z wybranych przez nas klasyfikatorów ma pewne charakterystyczne parametry, które odpowiednio dobrane skutkują najlepszą skutecznością. Aby zapewnić, że wybrane parametry rzeczywiście są najlepsze ich dobór nastąpił przy użyciu metody grid search. Jest to prosta koncepcyjnie metoda przeszukująca punkty na siatce w zdefiniowanej, ograniczonej przestrzeni potencjalnych wartości. Po jej zastosowaniu otrzymane zostały następujące wartości:
+\begin{itemize}
+	\item SVM: jądro: RBF (Gaussowskie)
+	\item RF: liczba lasów = 100 
+	\item KNN: liczba sąsiadów branych pod uwagę: 5
+\end{itemize}
+
+\section{Wyniki}
 Wstępne testy przeprowadzone zostały na znormalizowanych cechach dostepnych w ramach dostarczonego przez konkurs oprogramowania. Zawierały one takie wartości jak odchylenia standardowe interwałów dla poszczególnych segmentów sygnału PCG, standardowe odchylenia oraz wartości średnie. Wyniki klasyfikacji zostały przedstawione w tabelce \ref{results1}. \\
 
 \begin{table}[!htp]
